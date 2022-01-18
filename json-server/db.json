@@ -1,0 +1,12 @@
+ {
+  "people": [
+    {"name": "John Doe", "description": "A person of interest.", "category": "high", "active": true },
+    {"name": "Jane Doe", "description": "A person of interest.", "category": "mid", "active": true },
+    {"name": "Di Doe", "description": "A person of musical interest.", "category": "low", "active": false }
+  ],
+  "category": [
+    {"text": "high"},
+    {"text": "low"},
+    {"text": "mid"}
+  ]
+}
