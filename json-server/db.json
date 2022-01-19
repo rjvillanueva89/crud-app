@@ -1,12 +1,13 @@
  {
-  "people": [
-    {"name": "John Doe", "description": "A person of interest.", "category": "high", "active": true },
-    {"name": "Jane Doe", "description": "A person of interest.", "category": "mid", "active": true },
-    {"name": "Di Doe", "description": "A person of musical interest.", "category": "low", "active": false }
+  "users": [
+    {"id": 1, "name": "John Doe", "description": "A person of interest.", "category": "admin", "active": true },
+    {"id": 2, "name": "Jane Doe", "description": "A person of interest.", "category": "support", "active": true },
+    {"id": 3, "name": "Di Doe", "description": "A person of musical interest.", "category": "accounting", "active": false }
   ],
   "category": [
-    {"text": "high"},
-    {"text": "low"},
-    {"text": "mid"}
+    {"text": "admin"},
+    {"text": "accounting"},
+    {"text": "support"},
+    {"text": "employee"}
   ]
 }
