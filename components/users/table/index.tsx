@@ -11,7 +11,7 @@ export default function Table(Props) {
     <table className="w-full bg-white text-center">
       <thead className="bg-gray-800 text-white">
         <tr>
-          <th className="py-3 px-4 uppercase font-semibold text-sm w-1"><i className="fa fa-square"></i></th>
+          <th className="py-3 px-4 uppercase font-semibold text-sm w-1"><i className="far fa-square"></i></th>
           <th className="py-3 px-4 uppercase font-semibold text-sm">Name</th>
           <th className="py-3 px-4 uppercase font-semibold text-sm">Category</th>
           <th className="py-3 px-4 uppercase font-semibold text-sm">Active</th>
@@ -20,16 +20,18 @@ export default function Table(Props) {
       </thead>
       <tbody className="text-gray-700">
         { isLoading ? (
-          <Row empty="true" message="Loading users..." />
+          <Row message="Loading users..." />
         ) : (
           <>
             {
+              // check if there's any users returned
               data.length ? (
+                // loop through user data
                 data.map((user) => (
                   <Row key={user.id} data={user} />
                 ))
               ) : (
-                <Row empty="true" message="No users found..." />
+                <Row message="No users found..." />
               )
             }
           </>
