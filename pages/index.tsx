@@ -9,6 +9,7 @@ import UserModalContext from '../components/users/modal/context'
 const Home: NextPage = () => {
 
   const [userModalisVisible, setUserModalVisibility] = useState(false);
+  const [userModalData, setUserModalData] = useState({ data: null });
 
   const userModalActions = {
     show: function() {
@@ -16,13 +17,23 @@ const Home: NextPage = () => {
     },
     close: function() {
       setUserModalVisibility(false);
+    },
+    setData: function(options) {
+      setUserModalData(options);
     }
   }
 
   const userModalSetting = {
-    title: 'Add New Record',
-    submitBtn: 'Add',
-    cancelBtn: 'Cancel'
+    add: {
+      title: 'Add New Record',
+      submitBtn: 'Add',
+      cancelBtn: 'Cancel'
+    },
+    edit: {
+      title: 'Edit Record',
+      submitBtn: 'Update',
+      cancelBtn: 'Cancel'
+    }
   }
 
   const UserModalOptions = {
@@ -32,7 +43,7 @@ const Home: NextPage = () => {
   return (
     <UserModalContext.Provider value={{ action: UserModalOptions, setting: userModalSetting }}>
       <Layout>
-        <UserModal isVisible={userModalisVisible} action={userModalActions} setting={userModalSetting} />
+        <UserModal isVisible={userModalisVisible} action={userModalActions} setting={userModalSetting} data={userModalData} />
         <UsersTable />
       </Layout>
     </UserModalContext.Provider>
