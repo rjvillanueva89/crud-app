@@ -8,8 +8,12 @@ type Props = {
 
 export default function Layout({ children }: Props) {
   const {
-    options: options
+    action
   } = useContext(UserModalContext);
+
+  const openModal = function() {
+
+  }
 
   return (
     <div id="container" className="bg-gray-100 font-family-karla w-full min-h-screen">
@@ -22,7 +26,7 @@ export default function Layout({ children }: Props) {
           </Link>
         </div>
         <div id="action" className="flex flex-1 justify-end">
-          <button className="h-full px-7 bg-emerald-600 text-white" onClick={options.ShowModal}>
+           <button className="h-full px-7 bg-emerald-600 text-white" onClick={action.do.show}>
             <i className="fas fa-plus"></i>
           </button>
           <button className="h-full px-7 bg-rose-700 text-white opacity-50 cursor-not-allowed">
