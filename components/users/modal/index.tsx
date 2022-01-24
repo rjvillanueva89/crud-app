@@ -1,18 +1,13 @@
-import React, { ReactNode, createContext, useContext, useState } from 'react'
+import { ReactNode, useContext, useState } from 'react'
 import Link from 'next/link'
 
 type Props = {
-  // children?: ReactNode,
   isOpen: boolean,
-  data?: object
+  data?: object,
+  options?: object
 }
 
-// const UserModalContext = createContext({} as any);
-
-export default function Modal({ isOpen, data }: Props) {
-  // const {
-  //   setUserModal
-  // } = useContext(UserModalContext);
+export default function Modal({ isOpen, data, options }: Props) {
 
   if(!isOpen) {
     return null;
@@ -80,7 +75,7 @@ export default function Modal({ isOpen, data }: Props) {
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               Agree
             </button>
-            <button className="bg-transparent hover:bg-gray-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
+            <button className="bg-transparent hover:bg-gray-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" onClick={options.HideModal}>
               Close
             </button>
           </div>
