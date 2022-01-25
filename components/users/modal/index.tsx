@@ -1,7 +1,8 @@
 import { ReactNode, useContext, useState, useEffect } from 'react'
 import { useQuery, useQueryClient } from 'react-query'
 import { useForm, SubmitHandler } from "react-hook-form";
-import { getData, postData, putData, deleteData } from '../../helpers'
+import { getData, postData, putData, deleteData, Toast } from '../../helpers'
+import Swal from 'sweetalert2'
 import Link from 'next/link'
 
 type Props = {
@@ -57,6 +58,10 @@ export default function Modal({ isVisible, action, rowData }: Props) {
 
             // hide modal
             action.close();
+
+            Toast.fire({
+              title: 'User updated successfully'
+            });
           } else {
             console.log('something went wrong');
           }
@@ -73,6 +78,11 @@ export default function Modal({ isVisible, action, rowData }: Props) {
 
             // hide modal
             action.close();
+
+            Toast.fire({
+              title: 'User created successfully'
+            });
+
           } else {
             console.log('something went wrong');
           }
@@ -81,15 +91,29 @@ export default function Modal({ isVisible, action, rowData }: Props) {
   };
 
   const onDelete = function() {
-    deleteData('users/' + rowData.id)
-      .then(response => response.json())
-      .then(function(data) {
-        // update Users table
-        queryClient.invalidateQueries('Users');
+    Swal.fire({
+        html: 'Are you sure you want to Delete <b>' + rowData.name + '</b>?',
+        icon: 'warning',
+        confirmButtonText: 'Delete',
+        cancelButtonText: 'Cancel',
+        showCancelButton: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          deleteData('users/' + rowData.id)
+            .then(response => response.json())
+            .then(function(data) {
+              // update Users table
+              queryClient.invalidateQueries('Users');
 
-        // hide modal
-        action.close();
-      })
+              // hide modal
+              action.close();
+
+              Toast.fire({
+                title: 'User deleted successfully'
+              });
+            })
+        }
+      });
   }
 
   useEffect(() => {

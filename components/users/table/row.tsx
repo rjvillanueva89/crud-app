@@ -1,7 +1,8 @@
 import React, { ReactNode, useContext } from 'react'
 import { useQueryClient } from 'react-query'
 import UserModalContext from '../modal/context'
-import { deleteData } from '../../helpers'
+import { deleteData, Toast } from '../../helpers'
+import Swal from 'sweetalert2'
 
 export default function Row({ ...Props }) {
 
@@ -17,15 +18,29 @@ export default function Row({ ...Props }) {
     }
 
     const onDelete = function() {
-      deleteData('users/' + Props.data.id)
-        .then(response => response.json())
-        .then(function(data) {
-          // update Users table
-          queryClient.invalidateQueries('Users');
+      Swal.fire({
+        html: 'Are you sure you want to Delete <b>' + Props.data.name + '</b>?',
+        icon: 'warning',
+        confirmButtonText: 'Delete',
+        cancelButtonText: 'Cancel',
+        showCancelButton: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          deleteData('users/' + Props.data.id)
+            .then(response => response.json())
+            .then(function(data) {
+              // update Users table
+              queryClient.invalidateQueries('Users');
 
-          // hide modal
-          action.close();
-        })
+              // hide modal
+              action.close();
+
+              Toast.fire({
+                title: 'User deleted successfully'
+              });
+            })
+        }
+      });
     }
 
     return (
