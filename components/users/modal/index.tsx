@@ -1,7 +1,7 @@
 import { ReactNode, useContext, useState, useEffect } from 'react'
 import { useQuery, useQueryClient } from 'react-query'
 import { useForm, SubmitHandler } from "react-hook-form";
-import { getData, postData, putData } from '../../helpers'
+import { getData, postData, putData, deleteData } from '../../helpers'
 import Link from 'next/link'
 
 type Props = {
@@ -43,7 +43,6 @@ export default function Modal({ isVisible, action, rowData }: Props) {
   )
 
   const queryClient = useQueryClient();
-
   const useLabel = (rowData.id == undefined) ? Labels.add : Labels.edit;
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = function(formData) {
@@ -80,6 +79,18 @@ export default function Modal({ isVisible, action, rowData }: Props) {
         });
     }
   };
+
+  const onDelete = function() {
+    deleteData('users/' + rowData.id)
+      .then(response => response.json())
+      .then(function(data) {
+        // update Users table
+        queryClient.invalidateQueries('Users');
+
+        // hide modal
+        action.close();
+      })
+  }
 
   useEffect(() => {
     if(rowData.id) {
@@ -155,7 +166,7 @@ export default function Modal({ isVisible, action, rowData }: Props) {
               </button>
               {
                 rowData.id != undefined && (
-                  <button className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded mr-1" type="button">
+                  <button className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded mr-1" type="button" onClick={onDelete}>
                     {useLabel.deleteBtn}
                   </button>
                 )

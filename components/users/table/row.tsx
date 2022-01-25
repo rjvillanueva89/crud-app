@@ -1,15 +1,31 @@
 import React, { ReactNode, useContext } from 'react'
+import { useQueryClient } from 'react-query'
 import UserModalContext from '../modal/context'
+import { deleteData } from '../../helpers'
 
 export default function Row({ ...Props }) {
 
   if(Props.data) {
+    const queryClient = useQueryClient();
+
     const {
       action
     } = useContext(UserModalContext);
 
     const editRow = function() {
       action.show(Props.data);
+    }
+
+    const onDelete = function() {
+      deleteData('users/' + Props.data.id)
+        .then(response => response.json())
+        .then(function(data) {
+          // update Users table
+          queryClient.invalidateQueries('Users');
+
+          // hide modal
+          action.close();
+        })
     }
 
     return (
@@ -26,7 +42,7 @@ export default function Row({ ...Props }) {
           <button className="h-full px-4 py-2 text-emerald-600" type="button" onClick={editRow}>
             <i className="fas fa-edit"></i>
           </button>
-          <button className="h-full px-4 py-2 text-rose-700">
+          <button className="h-full px-4 py-2 text-rose-700" type="button" onClick={onDelete}>
             <i className="fas fa-trash"></i>
           </button>
         </td>

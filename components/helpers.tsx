@@ -21,3 +21,9 @@ export const putData = async function(resource: string, data: object) {
     body: JSON.stringify(data)
   });
 }
+
+export const deleteData = async function(resource: string) {
+  return fetch(process.env.DB_URL + resource, {
+    method: 'DELETE'
+  });
+}
