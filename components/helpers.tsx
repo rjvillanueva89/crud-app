@@ -11,3 +11,13 @@ export const postData = async function(resource: string, data: object) {
     body: JSON.stringify(data)
   });
 }
+
+export const putData = async function(resource: string, data: object) {
+  return fetch(process.env.DB_URL + resource, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
+}
