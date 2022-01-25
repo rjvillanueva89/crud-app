@@ -1,5 +1,5 @@
 import { ReactNode, useContext, useState, useEffect } from 'react'
-import { useQuery, useMutation } from 'react-query'
+import { useQuery, useQueryClient } from 'react-query'
 import { useForm, SubmitHandler } from "react-hook-form";
 import { getData, postData } from '../../helpers'
 import Link from 'next/link'
@@ -42,11 +42,24 @@ export default function Modal({ isVisible, action, rowData }: Props) {
     { staleTime: Infinity }
   )
 
+  const queryClient = useQueryClient();
+
   const useLabel = (rowData.id == undefined) ? Labels.add : Labels.edit;
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = function(formData) {
-    postData('users', formData);
-    action.close();
+    postData('users', formData)
+      .then(response => response.json())
+      .then(function(data) {
+        if(data.id) {
+          // update Users table
+          queryClient.invalidateQueries('Users');
+
+          // hide modal
+          action.close();
+        } else {
+          console.log('something went wrong');
+        }
+      });
   };
 
   useEffect(() => {
