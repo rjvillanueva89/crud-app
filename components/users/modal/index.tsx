@@ -39,6 +39,7 @@ export default function Modal({ isVisible, action, rowData }: Props) {
   const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
 
   if(rowData.id) {
+    setValue('id', rowData.id);
     setValue('name', rowData.name);
     setValue('description', rowData.description);
     setValue('category', rowData.category);
@@ -49,6 +50,12 @@ export default function Modal({ isVisible, action, rowData }: Props) {
     <div className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800/50">
       <div className="bg-white rounded-lg w-1/2">
         <form onSubmit={handleSubmit(onSubmit)}>
+          {
+            rowData.id != undefined && (
+              <input type="hidden" {...register('id')} />
+            )
+          }
+
           <div className="flex flex-col items-start p-4">
             <div className="flex items-center w-full mb-4">
               <div className="text-gray-900 font-medium text-lg">{useLabel.title}</div>
