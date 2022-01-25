@@ -1,10 +1,11 @@
 import { useQuery } from 'react-query'
+import { getData } from '../../helpers'
 import Row from './row'
 
 export default function Table() {
-  const { isLoading, error, data } = useQuery('fetchUsers', () =>
-    fetch(process.env.DB_URL + 'users')
-      .then(response => response.json())
+
+  const { isLoading, error, data } = useQuery('Users', () =>
+    getData('users')
   )
 
   return (

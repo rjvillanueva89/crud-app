@@ -1,11 +1,13 @@
-import { ReactNode, useContext, useState } from 'react'
+import { ReactNode, useContext, useState, useEffect } from 'react'
+import { useQuery, useMutation } from 'react-query'
 import { useForm, SubmitHandler } from "react-hook-form";
+import { getData, postData } from '../../helpers'
 import Link from 'next/link'
 
 type Props = {
   isVisible: boolean,
   action: object
-  rowData?: object
+  rowData?: object | undefined
 }
 
 type Inputs = {
@@ -15,37 +17,47 @@ type Inputs = {
   active: boolean;
 };
 
+const Labels = {
+  add: {
+    title: 'Add New Record',
+    submitBtn: 'Add',
+    cancelBtn: 'Cancel'
+  },
+  edit: {
+    title: 'Edit Record',
+    submitBtn: 'Update',
+    deleteBtn: 'Delete',
+    cancelBtn: 'Cancel'
+  }
+}
+
 export default function Modal({ isVisible, action, rowData }: Props) {
 
   if(!isVisible) {
     return null;
   }
 
-  const Labels = {
-    add: {
-      title: 'Add New Record',
-      submitBtn: 'Add',
-      cancelBtn: 'Cancel'
-    },
-    edit: {
-      title: 'Edit Record',
-      submitBtn: 'Update',
-      deleteBtn: 'Delete',
-      cancelBtn: 'Cancel'
-    }
-  }
+  const { isLoading, error, data } = useQuery('Category', () =>
+    getData('category'),
+    { staleTime: Infinity }
+  )
+
   const useLabel = (rowData.id == undefined) ? Labels.add : Labels.edit;
-
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = function(formData) {
+    postData('users', formData);
+    action.close();
+  };
 
-  if(rowData.id) {
-    setValue('id', rowData.id);
-    setValue('name', rowData.name);
-    setValue('description', rowData.description);
-    setValue('category', rowData.category);
-    setValue('active', rowData.active);
-  }
+  useEffect(() => {
+    if(rowData.id) {
+      setValue('id', rowData.id);
+      setValue('name', rowData.name);
+      setValue('description', rowData.description);
+      setValue('category', rowData.category);
+      setValue('active', rowData.active);
+    }
+  });
 
   return(
     <div className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800/50">
@@ -78,11 +90,20 @@ export default function Modal({ isVisible, action, rowData }: Props) {
               <div className="flex flex-wrap mb-3">
                 <div className="relative w-full appearance-none label-floating">
                   <select id="category" className="tracking-wide py-2 px-4 mb-3 leading-relaxed appearance-none block w-full bg-gray-200 border border-gray-200 rounded focus:outline-none focus:bg-white focus:border-gray-500" {...register('category', { required: true })}>
-                    <option value="">Select category</option>
-                    <option value="admin">admin</option>
-                    <option value="accounting">accounting</option>
-                    <option value="support">support</option>
-                    <option value="employee">employee</option>
+                    {
+                      isLoading ? (
+                        <option value="">Loading categories...</option>
+                      ) : (
+                        <>
+                          <option value="">Select category</option>
+                          {
+                            data.map((category) => (
+                               <option key={category.text} value={category.text}>{category.text}</option>
+                            ))
+                          }
+                        </>
+                      )
+                    }
                   </select>
                 </div>
               </div>

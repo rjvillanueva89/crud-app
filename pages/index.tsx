@@ -1,6 +1,5 @@
 import type { NextPage } from 'next'
 import { useState } from 'react';
-import { useQuery } from "react-query";
 import Layout from '../layout'
 import UsersTable from '../components/users/table'
 import UserModal from '../components/users/modal'
