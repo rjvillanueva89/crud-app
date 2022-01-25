@@ -1,8 +1,17 @@
+import { useContext } from 'react'
 import { useQuery } from 'react-query'
 import { getData } from '../../helpers'
+import UserContext from '../context'
 import Row from './row'
 
-export default function Table() {
+type Props = {
+  userSearch: string
+}
+
+export default function Table({ userSearch }: Props) {
+  const {
+    action
+  } = useContext(UserContext);
 
   const { isLoading, error, data } = useQuery('Users', () =>
     getData('users')

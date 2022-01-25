@@ -1,6 +1,6 @@
 import React, { ReactNode, useContext } from 'react'
 import Link from 'next/link'
-import UserModalContext from '../components/users/modal/context'
+import UserContext from '../components/users/context'
 
 type Props = {
   children?: ReactNode
@@ -8,8 +8,13 @@ type Props = {
 
 export default function Layout({ children }: Props) {
   const {
-    action
-  } = useContext(UserModalContext);
+    action,
+    search
+  } = useContext(UserContext);
+
+  const searchValue = function(event: any) {
+    search.setValue(event.target.value);
+  }
 
   return (
     <div id="container" className="bg-gray-100 font-family-karla w-full min-h-screen">
@@ -21,8 +26,9 @@ export default function Layout({ children }: Props) {
             </a>
           </Link>
         </div>
-        <div id="action" className="flex flex-1 justify-end">
-           <button className="h-full px-7 bg-emerald-600 text-white" onClick={action.show} type="button">
+        <div id="action" className="flex flex-1 justify-end overflow-hidden">
+          <input type="search" className="p-4 bg-transparent flex-1 focus:border-0" placeholder="Search..." onChange={searchValue} />
+          <button className="h-full px-7 bg-emerald-600 text-white" onClick={action.show} type="button">
             <i className="fas fa-plus"></i>
           </button>
           <button className="h-full px-7 bg-rose-700 text-white opacity-50 cursor-not-allowed">

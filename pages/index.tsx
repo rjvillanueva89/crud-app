@@ -3,12 +3,13 @@ import { useState } from 'react';
 import Layout from '../layout'
 import UsersTable from '../components/users/table'
 import UserModal from '../components/users/modal'
-import UserModalContext from '../components/users/modal/context'
+import UserContext from '../components/users/context'
 
 const Home: NextPage = () => {
 
   const [userModalisVisible, setUserModalVisibility] = useState(false);
   const [userModalData, setUserModalData] = useState({});
+  const [searchVal, setSearch] = useState('');
 
   const userModalActions = {
     show: function(data = null) {
@@ -24,13 +25,19 @@ const Home: NextPage = () => {
     }
   }
 
+  const userSearch = {
+    setValue: function(val) {
+      setSearch(val)
+    }
+  }
+
   return (
-    <UserModalContext.Provider value={{ action: userModalActions }}>
+    <UserContext.Provider value={{ action: userModalActions, search: userSearch }}>
       <Layout>
         <UserModal isVisible={userModalisVisible} action={userModalActions} rowData={userModalData} />
-        <UsersTable />
+        <UsersTable userSearch={searchVal} />
       </Layout>
-    </UserModalContext.Provider>
+    </UserContext.Provider>
   )
 }
 

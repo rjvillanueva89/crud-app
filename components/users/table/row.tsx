@@ -1,6 +1,6 @@
 import React, { ReactNode, useContext } from 'react'
 import { useQueryClient } from 'react-query'
-import UserModalContext from '../modal/context'
+import UserContext from '../context'
 import { deleteData, Toast } from '../../helpers'
 import Swal from 'sweetalert2'
 
@@ -11,7 +11,7 @@ export default function Row({ ...Props }) {
 
     const {
       action
-    } = useContext(UserModalContext);
+    } = useContext(UserContext);
 
     const editRow = function() {
       action.show(Props.data);
