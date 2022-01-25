@@ -30,6 +30,7 @@ export default function Modal({ isVisible, action, rowData }: Props) {
     edit: {
       title: 'Edit Record',
       submitBtn: 'Update',
+      deleteBtn: 'Delete',
       cancelBtn: 'Cancel'
     }
   }
@@ -99,6 +100,13 @@ export default function Modal({ isVisible, action, rowData }: Props) {
               <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-1" type="submit">
                 {useLabel.submitBtn}
               </button>
+              {
+                rowData.id != undefined && (
+                  <button className="bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded mr-1" type="button">
+                    {useLabel.deleteBtn}
+                  </button>
+                )
+              }
               <button className="bg-transparent hover:bg-gray-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" onClick={action.close} type="button">
                 {useLabel.cancelBtn}
               </button>
