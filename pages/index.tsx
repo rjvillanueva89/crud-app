@@ -9,41 +9,26 @@ import UserModalContext from '../components/users/modal/context'
 const Home: NextPage = () => {
 
   const [userModalisVisible, setUserModalVisibility] = useState(false);
-  const [userModalData, setUserModalData] = useState({ data: null });
+  const [userModalData, setUserModalData] = useState({});
 
   const userModalActions = {
-    show: function() {
+    show: function(data = null) {
+      if(data) {
+        setUserModalData(data);
+      }
+
       setUserModalVisibility(true);
     },
     close: function() {
+      setUserModalData({});
       setUserModalVisibility(false);
-    },
-    setData: function(options) {
-      setUserModalData(options);
     }
-  }
-
-  const userModalSetting = {
-    add: {
-      title: 'Add New Record',
-      submitBtn: 'Add',
-      cancelBtn: 'Cancel'
-    },
-    edit: {
-      title: 'Edit Record',
-      submitBtn: 'Update',
-      cancelBtn: 'Cancel'
-    }
-  }
-
-  const UserModalOptions = {
-    do: userModalActions
   }
 
   return (
-    <UserModalContext.Provider value={{ action: UserModalOptions, setting: userModalSetting }}>
+    <UserModalContext.Provider value={{ action: userModalActions }}>
       <Layout>
-        <UserModal isVisible={userModalisVisible} action={userModalActions} setting={userModalSetting} data={userModalData} />
+        <UserModal isVisible={userModalisVisible} action={userModalActions} rowData={userModalData} />
         <UsersTable />
       </Layout>
     </UserModalContext.Provider>
