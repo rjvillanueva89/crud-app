@@ -8,7 +8,7 @@ type Props = {
 
 export default function Layout({ children }: Props) {
   const {
-    action,
+    modal,
     search
   } = useContext(UserContext);
 
@@ -28,7 +28,7 @@ export default function Layout({ children }: Props) {
         </div>
         <div id="action" className="flex flex-1 justify-end overflow-hidden">
           <input type="search" className="p-4 bg-transparent flex-1 focus:border-0" placeholder="Search..." onChange={searchValue} />
-          <button className="h-full px-7 bg-emerald-600 text-white" onClick={action.show} type="button">
+          <button className="h-full px-7 bg-emerald-600 text-white" onClick={() => { modal.show() }} type="button">
             <i className="fas fa-plus"></i>
           </button>
           <button className="h-full px-7 bg-rose-700 text-white opacity-50 cursor-not-allowed">

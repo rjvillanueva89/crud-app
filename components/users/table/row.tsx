@@ -10,11 +10,11 @@ export default function Row({ ...Props }) {
     const queryClient = useQueryClient();
 
     const {
-      action
+      modal
     } = useContext(UserContext);
 
     const editRow = function() {
-      action.show(Props.data);
+      modal.show(Props.data);
     }
 
     const onDelete = function() {
@@ -33,7 +33,7 @@ export default function Row({ ...Props }) {
               queryClient.invalidateQueries('Users');
 
               // hide modal
-              action.close();
+              modal.close();
 
               Toast.fire({
                 title: 'User deleted successfully'

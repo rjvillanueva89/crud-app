@@ -8,7 +8,7 @@ import UserContext from '../components/users/context'
 const Home: NextPage = () => {
 
   const [userModalisVisible, setUserModalVisibility] = useState(false);
-  const [userModalData, setUserModalData] = useState({});
+  const [userModalData, setUserModalData] = useState(null);
   const [searchVal, setSearch] = useState('');
 
   const userModalActions = {
@@ -20,7 +20,7 @@ const Home: NextPage = () => {
       setUserModalVisibility(true);
     },
     close: function() {
-      setUserModalData({});
+      setUserModalData(null);
       setUserModalVisibility(false);
     }
   }
@@ -32,9 +32,9 @@ const Home: NextPage = () => {
   }
 
   return (
-    <UserContext.Provider value={{ action: userModalActions, search: userSearch }}>
+    <UserContext.Provider value={{ modal: userModalActions, search: userSearch }}>
       <Layout>
-        <UserModal isVisible={userModalisVisible} action={userModalActions} rowData={userModalData} />
+        <UserModal isVisible={userModalisVisible} modal={userModalActions} rowData={userModalData} />
         <UsersTable userSearch={searchVal} />
       </Layout>
     </UserContext.Provider>

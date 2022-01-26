@@ -6,18 +6,19 @@ import Swal from 'sweetalert2'
 
 type Props = {
   isVisible: boolean,
-  action: object
+  modal: any
   rowData?: object | undefined
 }
 
 type FormData = {
+  id: number;
   name: string;
   description: string;
   category: string;
   active: boolean;
 };
 
-export default function Modal({ isVisible, action, rowData }: Props) {
+export default function Modal({ isVisible, modal, rowData }: Props) {
 
   const { isLoading, error, data } = useQuery('Category', () =>
     getData('category'),
@@ -27,14 +28,14 @@ export default function Modal({ isVisible, action, rowData }: Props) {
   const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
 
   const queryClient = useQueryClient();
-  const submitForm = useMutation((userData: object) =>
+  const createUser = useMutation((userData: object) =>
     postData('users', userData), {
       onSuccess: () => {
         // update Users table
         queryClient.invalidateQueries('Users');
 
         // hide modal
-        action.close();
+        modal.close();
 
         Toast.fire({
           title: 'User created successfully'
@@ -43,10 +44,70 @@ export default function Modal({ isVisible, action, rowData }: Props) {
     }
   )
 
+  const editUser = useMutation((userData: object) =>
+    putData('users/' + userData.id, userData), {
+      onSuccess: () => {
+        // update Users table
+        queryClient.invalidateQueries('Users');
+
+        // hide modal
+        modal.close();
+
+        Toast.fire({
+          title: 'User updated successfully'
+        });
+      }
+    }
+  )
+
+  const deleteUser = useMutation((id: number) =>
+    deleteData('users/' + id), {
+      onSuccess: () => {
+        // update Users table
+        queryClient.invalidateQueries('Users');
+
+        // hide modal
+        modal.close();
+
+        Toast.fire({
+          title: 'User updated successfully'
+        });
+      }
+    }
+  )
+
   const onSubmit = handleSubmit(data => {
-    submitForm.mutate(data);
+    if(rowData) {
+      editUser.mutate(data);
+    } else {
+      createUser.mutate(data);
+    }
 
     reset();
+  });
+
+  const onDelete = function() {
+    Swal.fire({
+        html: 'Are you sure you want to Delete <b>' + rowData.name + '</b>?',
+        icon: 'warning',
+        confirmButtonText: 'Delete',
+        cancelButtonText: 'Cancel',
+        showCancelButton: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          deleteUser.mutate(rowData.id);
+        }
+      });
+  }
+
+  useEffect(() => {
+    if(rowData) {
+      setValue('id', rowData.id);
+      setValue('name', rowData.name);
+      setValue('description', rowData.description);
+      setValue('category', rowData.category);
+      setValue('active', rowData.active);
+    }
   });
 
   if(!isVisible) {
@@ -57,9 +118,15 @@ export default function Modal({ isVisible, action, rowData }: Props) {
     <div className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800/50">
       <div className="bg-white rounded-lg w-1/2">
         <form onSubmit={onSubmit}>
+          <input type="hidden" {...register('id')} />
           <div className="flex flex-col items-start p-4">
             <div className="flex items-center w-full mb-4">
-              <div className="text-gray-900 font-medium text-lg">Create New User</div>
+              { rowData ? (
+                  <div className="text-gray-900 font-medium text-lg">Edit User</div>
+                ) : (
+                  <div className="text-gray-900 font-medium text-lg">Create New User</div>
+                )
+              }
             </div>
 
             <div className="py-2 w-full">
@@ -85,8 +152,8 @@ export default function Modal({ isVisible, action, rowData }: Props) {
                         <>
                           <option value="">Select category</option>
                           {
-                            data.map((category) => (
-                               <option key={category.text} value={category.text}>{category.text}</option>
+                            data.map((data) => (
+                               <option key={data.text} value={data.text}>{data.text}</option>
                             ))
                           }
                         </>
@@ -106,10 +173,22 @@ export default function Modal({ isVisible, action, rowData }: Props) {
             </div>
 
             <div className="ml-auto">
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-1" type="submit">
-                Create
-              </button>
-              <button className="bg-transparent hover:bg-gray-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" onClick={action.close} type="button">
+              { rowData ? (
+                  <>
+                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-1" type="submit">
+                      Update
+                    </button>
+                    <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-1" type="button">
+                      Delete
+                    </button>
+                  </>
+                ) : (
+                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-1" type="submit">
+                    Create
+                  </button>
+                )
+              }
+              <button className="bg-transparent hover:bg-gray-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" onClick={modal.close} type="button">
                 Cancel
               </button>
             </div>
