@@ -5,17 +5,17 @@ import UserContext from '../context'
 import Row from './row'
 
 type Props = {
-  userSearch: string
+  search: string
 }
 
-export default function Table({ userSearch }: Props) {
+export default function Table({ search }: Props) {
   const {
     action
   } = useContext(UserContext);
 
-  const { isLoading, error, data } = useQuery('Users', () =>
-    getData('users')
-  )
+  const { isLoading, error, data } = useQuery(['Users', search], () => {
+    return getData('users?name_like=' + search);
+  })
 
   return (
     <table className="w-full bg-white text-center">

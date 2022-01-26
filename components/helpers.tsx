@@ -1,5 +1,4 @@
 export const getData = async function(resource: string) {
-  console.log(resource);
   return fetch(process.env.DB_URL + resource).then(response => response.json());
 }
 

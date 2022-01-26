@@ -35,7 +35,7 @@ const Home: NextPage = () => {
     <UserContext.Provider value={{ modal: userModalActions, search: userSearch }}>
       <Layout>
         <UserModal isVisible={userModalisVisible} modal={userModalActions} rowData={userModalData} />
-        <UsersTable userSearch={searchVal} />
+        <UsersTable search={searchVal} />
       </Layout>
     </UserContext.Provider>
   )

@@ -35,7 +35,7 @@ export default function Modal({ isVisible, modal, rowData }: Props) {
         queryClient.invalidateQueries('Users');
 
         // hide modal
-        modal.close();
+        onModalClose();
 
         Toast.fire({
           title: 'User created successfully'
@@ -51,7 +51,7 @@ export default function Modal({ isVisible, modal, rowData }: Props) {
         queryClient.invalidateQueries('Users');
 
         // hide modal
-        modal.close();
+        onModalClose();
 
         Toast.fire({
           title: 'User updated successfully'
@@ -67,7 +67,7 @@ export default function Modal({ isVisible, modal, rowData }: Props) {
         queryClient.invalidateQueries('Users');
 
         // hide modal
-        modal.close();
+        onModalClose();
 
         Toast.fire({
           title: 'User updated successfully'
@@ -98,6 +98,11 @@ export default function Modal({ isVisible, modal, rowData }: Props) {
           deleteUser.mutate(rowData.id);
         }
       });
+  }
+
+  const onModalClose = function() {
+    reset();
+    modal.close();
   }
 
   useEffect(() => {
@@ -188,7 +193,7 @@ export default function Modal({ isVisible, modal, rowData }: Props) {
                   </button>
                 )
               }
-              <button className="bg-transparent hover:bg-gray-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" onClick={modal.close} type="button">
+              <button className="bg-transparent hover:bg-gray-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded" onClick={onModalClose} type="button">
                 Cancel
               </button>
             </div>
