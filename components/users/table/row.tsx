@@ -1,5 +1,5 @@
 import React, { ReactNode, useContext } from 'react'
-import { useQueryClient } from 'react-query'
+import { useQueryClient, useMutation } from 'react-query'
 import UserContext from '../context'
 import { deleteData, Toast } from '../../helpers'
 import Swal from 'sweetalert2'
@@ -17,30 +17,31 @@ export default function Row({ ...Props }) {
       modal.show(Props.data);
     }
 
+    const deleteUser = useMutation((id: number) =>
+      deleteData('users/' + id), {
+        onSuccess: () => {
+          // update Users table
+          queryClient.invalidateQueries('Users');
+
+          Toast.fire({
+            title: 'User deleted successfully'
+          });
+        }
+      }
+    )
+
     const onDelete = function() {
       Swal.fire({
-        html: 'Are you sure you want to Delete <b>' + Props.data.name + '</b>?',
-        icon: 'warning',
-        confirmButtonText: 'Delete',
-        cancelButtonText: 'Cancel',
-        showCancelButton: true,
-      }).then((result) => {
-        if (result.isConfirmed) {
-          deleteData('users/' + Props.data.id)
-            .then(response => response.json())
-            .then(function(data) {
-              // update Users table
-              queryClient.invalidateQueries('Users');
-
-              // hide modal
-              modal.close();
-
-              Toast.fire({
-                title: 'User deleted successfully'
-              });
-            })
-        }
-      });
+          html: 'Are you sure you want to Delete <b>' + Props.data.name + '</b>?',
+          icon: 'warning',
+          confirmButtonText: 'Delete',
+          cancelButtonText: 'Cancel',
+          showCancelButton: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            deleteUser.mutate(Props.data.id);
+          }
+        });
     }
 
     return (

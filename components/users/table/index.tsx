@@ -5,10 +5,11 @@ import UserContext from '../context'
 import Row from './row'
 
 type Props = {
-  search: string
+  search: string;
+  filter: string;
 }
 
-export default function Table({ search }: Props) {
+export default function Table({ search, filter }: Props) {
   const {
     action
   } = useContext(UserContext);
@@ -41,7 +42,7 @@ export default function Table({ search }: Props) {
               // check if there's any users returned
               data.length ? (
                 // loop through user data
-                data.map((user) => (
+                data.map((user: any) => (
                   <Row key={user.id} data={user} />
                 ))
               ) : (

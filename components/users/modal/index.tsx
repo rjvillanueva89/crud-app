@@ -7,7 +7,7 @@ import Swal from 'sweetalert2'
 type Props = {
   isVisible: boolean,
   modal: any
-  rowData?: object | undefined
+  rowData?: object | null
 }
 
 type FormData = {
@@ -26,6 +26,11 @@ export default function Modal({ isVisible, modal, rowData }: Props) {
   )
 
   const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
+
+  const onModalClose = function() {
+    reset();
+    modal.close();
+  }
 
   const queryClient = useQueryClient();
   const createUser = useMutation((userData: object) =>
@@ -70,7 +75,7 @@ export default function Modal({ isVisible, modal, rowData }: Props) {
         onModalClose();
 
         Toast.fire({
-          title: 'User updated successfully'
+          title: 'User deleted successfully'
         });
       }
     }
@@ -98,11 +103,6 @@ export default function Modal({ isVisible, modal, rowData }: Props) {
           deleteUser.mutate(rowData.id);
         }
       });
-  }
-
-  const onModalClose = function() {
-    reset();
-    modal.close();
   }
 
   useEffect(() => {
@@ -183,7 +183,7 @@ export default function Modal({ isVisible, modal, rowData }: Props) {
                     <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-1" type="submit">
                       Update
                     </button>
-                    <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-1" type="button">
+                    <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mr-1" type="button" onClick={onDelete}>
                       Delete
                     </button>
                   </>
