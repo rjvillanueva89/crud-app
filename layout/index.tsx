@@ -9,7 +9,8 @@ type Props = {
 export default function Layout({ children }: Props) {
   const {
     modal,
-    filter
+    filter,
+    select
   } = useContext(UserContext);
 
   const searchFilter = function(event: any) {
@@ -18,6 +19,10 @@ export default function Layout({ children }: Props) {
 
   const activeFilter = function(event: any) {
     filter.updateActive(event.target.value);
+  }
+
+  const bulkDelete = function() {
+
   }
 
   return (
@@ -34,7 +39,7 @@ export default function Layout({ children }: Props) {
           <div className="flex w-full">
             <input type="search" className="p-4 bg-transparent flex-1 focus:border-0" placeholder="Search..." onChange={searchFilter} />
             <select className="p-4 bg-gray-800 text-white" onChange={activeFilter}>
-              <option value="">Set Filter</option>
+              <option value="">Filter</option>
               <option value="true">Active</option>
               <option value="false">Inactive</option>
             </select>
@@ -42,7 +47,7 @@ export default function Layout({ children }: Props) {
           <button className="h-full px-7 bg-emerald-600 text-white" onClick={() => { modal.show(null) }} type="button">
             <i className="fas fa-plus"></i>
           </button>
-          <button className="h-full px-7 bg-rose-700 text-white opacity-50 cursor-not-allowed hidden">
+          <button className={`h-full px-7 bg-rose-700 text-white ${!select.get().length ? 'opacity-50 cursor-not-allowed' : ''}`} onClick={bulkDelete}>
             <i className="fas fa-trash"></i>
           </button>
         </div>

@@ -5,18 +5,20 @@ import { deleteData, Toast } from '../../helpers'
 import Swal from 'sweetalert2'
 
 type Props = {
-  data: object;
-  message: string;
+  data?: any;
+  message?: string;
+  isSelected?: boolean;
 }
 
-export default function Row({ data, message }: Props) {
+export default function Row({ data, message, isSelected }: Props) {
 
   if(data) {
-    const queryClient = useQueryClient();
-
     const {
+      select,
       modal
     } = useContext(UserContext);
+
+    const queryClient = useQueryClient();
 
     const editRow = function() {
       modal.show(data);
@@ -49,11 +51,19 @@ export default function Row({ data, message }: Props) {
         });
     }
 
+    const selectRow = function(event) {
+      if(event.target.checked) {
+        select.add(data.id);
+      } else {
+        select.remove(data.id);
+      }
+    }
+
     return (
       <tr className="even:bg-slate-100">
         <td className="py-3 px-4">
           <label className="select-none checkbox block relative cursor-pointer text-xl h-4 w-4">
-            <input className="absolute opacity-0 left-0 top-0 cursor-pointer" type="checkbox" />
+            <input className="absolute opacity-0 left-0 top-0 cursor-pointer" type="checkbox" onClick={selectRow} />
             <span className="h-4 w-4 checkmark absolute top-0 left-0 bg-gray-400"></span>
           </label>
         </td>
