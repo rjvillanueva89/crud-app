@@ -32,9 +32,10 @@ export default function Table({ filter }: Props) {
       <thead className="bg-gray-800 text-white">
         <tr className="uppercase font-semibold text-lg">
           <th className="p-4 w-1">
-            <button className="selectAll">
-              <i className="far fa-square"></i>
-            </button>
+            <label className="select-none checkbox block relative cursor-pointer text-xl h-4 w-4">
+              <input className="absolute opacity-0 left-0 top-0 cursor-pointer" type="checkbox" />
+              <span className="h-4 w-4 checkmark absolute top-0 left-0 bg-gray-400"></span>
+            </label>
           </th>
           <th className="p-4">Name</th>
           <th className="p-4">Category</th>

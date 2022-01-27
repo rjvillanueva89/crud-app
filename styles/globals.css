@@ -11,3 +11,33 @@
   @apply: bg-green-400;
   background-color: #68D391;
 }
+
+.checkbox:hover input ~ .checkmark {
+  background-color: #a0aec0;
+}
+
+.checkbox input:checked ~ .checkmark {
+  background-color: #76818f;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkbox .checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}

@@ -31,20 +31,20 @@ export default function Layout({ children }: Props) {
           </Link>
         </div>
         <div id="action" className="flex flex-1 justify-end overflow-hidden">
-          <input type="search" className="p-4 bg-transparent flex-1 focus:border-0" placeholder="Search..." onChange={searchFilter} />
-          <button className="h-full px-7 bg-emerald-600 text-white" onClick={() => { modal.show(null) }} type="button">
-            <i className="fas fa-plus"></i>
-          </button>
-          <button className="h-full px-7 bg-rose-700 text-white opacity-50 cursor-not-allowed hidden">
-            <i className="fas fa-trash"></i>
-          </button>
-          <div className="flex">
+          <div className="flex w-full">
+            <input type="search" className="p-4 bg-transparent flex-1 focus:border-0" placeholder="Search..." onChange={searchFilter} />
             <select className="p-4 bg-gray-800 text-white" onChange={activeFilter}>
               <option value="">Set Filter</option>
               <option value="true">Active</option>
               <option value="false">Inactive</option>
             </select>
           </div>
+          <button className="h-full px-7 bg-emerald-600 text-white" onClick={() => { modal.show(null) }} type="button">
+            <i className="fas fa-plus"></i>
+          </button>
+          <button className="h-full px-7 bg-rose-700 text-white opacity-50 cursor-not-allowed hidden">
+            <i className="fas fa-trash"></i>
+          </button>
         </div>
       </header>
 

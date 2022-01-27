@@ -52,9 +52,10 @@ export default function Row({ data, message }: Props) {
     return (
       <tr className="even:bg-slate-100">
         <td className="py-3 px-4">
-          <button className="selectRow">
-            <i className="far fa-square"></i>
-          </button>
+          <label className="select-none checkbox block relative cursor-pointer text-xl h-4 w-4">
+            <input className="absolute opacity-0 left-0 top-0 cursor-pointer" type="checkbox" />
+            <span className="h-4 w-4 checkmark absolute top-0 left-0 bg-gray-400"></span>
+          </label>
         </td>
         <td className="py-3 px-4">{data.name}</td>
         <td className="py-3 px-4">{data.category}</td>
