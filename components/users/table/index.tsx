@@ -5,11 +5,10 @@ import UserContext from '../context'
 import Row from './row'
 
 type Props = {
-  search: string;
   filter: object;
 }
 
-export default function Table({ search, filter }: Props) {
+export default function Table({ filter }: Props) {
   // const {
   //   action
   // } = useContext(UserContext);

@@ -9,7 +9,6 @@ const Home: NextPage = () => {
 
   const [userModalisVisible, setUserModalVisibility] = useState(false);
   const [userModalData, setUserModalData] = useState(null);
-  const [search, setSearch] = useState('');
   const [filter, setFilter] = useState({ search: '', active: '' });
 
   const userModalActions = {
@@ -20,12 +19,6 @@ const Home: NextPage = () => {
     close: function() {
       setUserModalData(null);
       setUserModalVisibility(false);
-    }
-  }
-
-  const userSearch = {
-    setValue: function(val: any) {
-      setSearch(val)
     }
   }
 
@@ -41,10 +34,10 @@ const Home: NextPage = () => {
   }
 
   return (
-    <UserContext.Provider value={{ modal: userModalActions, search: userSearch, filter: userFilter }}>
+    <UserContext.Provider value={{ modal: userModalActions, filter: userFilter }}>
       <Layout>
         <UserModal isVisible={userModalisVisible} modal={userModalActions} rowData={userModalData} />
-        <UsersTable search={search} filter={filter} />
+        <UsersTable filter={filter} />
       </Layout>
     </UserContext.Provider>
   )

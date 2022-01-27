@@ -9,7 +9,6 @@ type Props = {
 export default function Layout({ children }: Props) {
   const {
     modal,
-    search,
     filter
   } = useContext(UserContext);
 
