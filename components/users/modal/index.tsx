@@ -7,7 +7,7 @@ import Swal from 'sweetalert2'
 type Props = {
   isVisible: boolean,
   modal: any
-  rowData?: object | null
+  rowData: any
 }
 
 type FormData = {
@@ -25,10 +25,9 @@ export default function Modal({ isVisible, modal, rowData }: Props) {
     { staleTime: Infinity }
   )
 
-  const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm<FormData>();
+  const { register, setValue, handleSubmit, formState: { errors }, reset } = useForm<FormData>({ shouldUnregister: true });
 
   const onModalClose = function() {
-    reset();
     modal.close();
   }
 
@@ -87,8 +86,6 @@ export default function Modal({ isVisible, modal, rowData }: Props) {
     } else {
       createUser.mutate(data);
     }
-
-    reset();
   });
 
   const onDelete = function() {
@@ -137,19 +134,19 @@ export default function Modal({ isVisible, modal, rowData }: Props) {
             <div className="py-2 w-full">
               <div className="flex flex-wrap mb-3">
                 <div className="relative w-full appearance-none label-floating">
-                  <input className="tracking-wide py-2 px-4 mb-3 leading-relaxed appearance-none block w-full bg-gray-200 border border-gray-200 rounded focus:outline-none focus:bg-white focus:border-gray-500" id="name" type="text" placeholder="Name" { ...register('name', { required: true }) } />
+                  <input className="tracking-wide py-2 px-4 mb-3 leading-relaxed appearance-none block w-full bg-gray-200 border border-gray-200 rounded focus:outline-none focus:bg-white focus:border-gray-500" id="name" type="text" placeholder="Name" defaultValue="" { ...register('name', { required: true }) } />
                 </div>
               </div>
 
               <div className="flex flex-wrap mb-3">
                 <div className="relative w-full appearance-none label-floating">
-                  <textarea className="autoexpand tracking-wide py-2 px-4 mb-3 leading-relaxed appearance-none block w-full bg-gray-200 border border-gray-200 rounded focus:outline-none focus:bg-white focus:border-gray-500" id="description" type="text" placeholder="Description" { ...register('description') }></textarea>
+                  <textarea className="autoexpand tracking-wide py-2 px-4 mb-3 leading-relaxed appearance-none block w-full bg-gray-200 border border-gray-200 rounded focus:outline-none focus:bg-white focus:border-gray-500" id="description" type="text" placeholder="Description" defaultValue="" { ...register('description') }></textarea>
                 </div>
               </div>
 
               <div className="flex flex-wrap mb-3">
                 <div className="relative w-full appearance-none label-floating">
-                  <select id="category" className="tracking-wide py-2 px-4 mb-3 leading-relaxed appearance-none block w-full bg-gray-200 border border-gray-200 rounded focus:outline-none focus:bg-white focus:border-gray-500" { ...register('category', { required: true }) }>
+                  <select id="category" className="tracking-wide py-2 px-4 mb-3 leading-relaxed appearance-none block w-full bg-gray-200 border border-gray-200 rounded focus:outline-none focus:bg-white focus:border-gray-500" defaultValue="" { ...register('category', { required: true }) }>
                     {
                       isLoading ? (
                         <option value="">Loading categories...</option>

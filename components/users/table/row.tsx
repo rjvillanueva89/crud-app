@@ -4,9 +4,14 @@ import UserContext from '../context'
 import { deleteData, Toast } from '../../helpers'
 import Swal from 'sweetalert2'
 
-export default function Row({ ...Props }) {
+type Props = {
+  data: object;
+  message: string;
+}
 
-  if(Props.data) {
+export default function Row({ data, message }: Props) {
+
+  if(data) {
     const queryClient = useQueryClient();
 
     const {
@@ -14,7 +19,7 @@ export default function Row({ ...Props }) {
     } = useContext(UserContext);
 
     const editRow = function() {
-      modal.show(Props.data);
+      modal.show(data);
     }
 
     const deleteUser = useMutation((id: number) =>
@@ -32,14 +37,14 @@ export default function Row({ ...Props }) {
 
     const onDelete = function() {
       Swal.fire({
-          html: 'Are you sure you want to Delete <b>' + Props.data.name + '</b>?',
+          html: 'Are you sure you want to Delete <b>' + data.name + '</b>?',
           icon: 'warning',
           confirmButtonText: 'Delete',
           cancelButtonText: 'Cancel',
           showCancelButton: true,
         }).then((result) => {
           if (result.isConfirmed) {
-            deleteUser.mutate(Props.data.id);
+            deleteUser.mutate(data.id);
           }
         });
     }
@@ -51,9 +56,9 @@ export default function Row({ ...Props }) {
             <i className="far fa-square"></i>
           </button>
         </td>
-        <td className="py-3 px-4">{Props.data.name}</td>
-        <td className="py-3 px-4">{Props.data.category}</td>
-        <td className="py-3 px-4">{Props.data.active ? 'active' : 'inactive'}</td>
+        <td className="py-3 px-4">{data.name}</td>
+        <td className="py-3 px-4">{data.category}</td>
+        <td className="py-3 px-4">{data.active ? 'active' : 'inactive'}</td>
         <td className="py-3 px-4 flex">
           <button className="h-full px-4 py-2 text-emerald-600" type="button" onClick={editRow}>
             <i className="fas fa-edit"></i>
@@ -69,7 +74,7 @@ export default function Row({ ...Props }) {
 
   return (
     <tr>
-      <td className="py-3 px-4" colSpan="5">{Props.message}</td>
+      <td className="py-3 px-4" colSpan="5">{message}</td>
     </tr>
   )
 }
