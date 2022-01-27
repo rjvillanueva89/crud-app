@@ -9,11 +9,16 @@ type Props = {
 export default function Layout({ children }: Props) {
   const {
     modal,
-    search
+    search,
+    filter
   } = useContext(UserContext);
 
-  const searchValue = function(event: any) {
-    search.setValue(event.target.value);
+  const searchFilter = function(event: any) {
+    filter.updateSearch(event.target.value);
+  }
+
+  const activeFilter = function(event: any) {
+    filter.updateActive(event.target.value);
   }
 
   return (
@@ -27,18 +32,20 @@ export default function Layout({ children }: Props) {
           </Link>
         </div>
         <div id="action" className="flex flex-1 justify-end overflow-hidden">
-          <input type="search" className="p-4 bg-transparent flex-1 focus:border-0" placeholder="Search..." onChange={searchValue} />
+          <input type="search" className="p-4 bg-transparent flex-1 focus:border-0" placeholder="Search..." onChange={searchFilter} />
           <button className="h-full px-7 bg-emerald-600 text-white" onClick={() => { modal.show(null) }} type="button">
             <i className="fas fa-plus"></i>
           </button>
           <button className="h-full px-7 bg-rose-700 text-white opacity-50 cursor-not-allowed hidden">
             <i className="fas fa-trash"></i>
           </button>
-          <select className="p-4 bg-gray-800 text-white">
-            <option value="none">Set Filter</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
+          <div className="flex">
+            <select className="p-4 bg-gray-800 text-white" onChange={activeFilter}>
+              <option value="">Set Filter</option>
+              <option value="true">Active</option>
+              <option value="false">Inactive</option>
+            </select>
+          </div>
         </div>
       </header>
 

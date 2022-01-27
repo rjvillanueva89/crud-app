@@ -6,16 +6,26 @@ import Row from './row'
 
 type Props = {
   search: string;
-  filter: string;
+  filter: object;
 }
 
 export default function Table({ search, filter }: Props) {
-  const {
-    action
-  } = useContext(UserContext);
+  // const {
+  //   action
+  // } = useContext(UserContext);
 
-  const { isLoading, error, data } = useQuery(['Users', search], () => {
-    return getData('users?name_like=' + search);
+  const { isLoading, error, data } = useQuery(['Users', filter], () => {
+    let request = 'users';
+
+    if(filter.search) {
+      request += '?name_like=' + filter.search;
+    }
+
+    if(filter.active) {
+      request += '?active=' + filter.active;
+    }
+
+    return getData(request);
   })
 
   return (
