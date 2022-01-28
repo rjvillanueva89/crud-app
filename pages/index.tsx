@@ -43,8 +43,8 @@ const Home: NextPage = () => {
     remove: function(id: number) {
       setSelectedRows(selectedRows.filter(userID => userID != id));
     },
-    empty: function() {
-
+    clear: function() {
+      setSelectedRows([]);
     },
     get: function() {
       return selectedRows;

@@ -51,7 +51,7 @@ export default function Row({ data, message, isSelected }: Props) {
         });
     }
 
-    const selectRow = function(event) {
+    const selectRow = function(event: any) {
       if(event.target.checked) {
         select.add(data.id);
       } else {
@@ -63,7 +63,7 @@ export default function Row({ data, message, isSelected }: Props) {
       <tr className="even:bg-slate-100">
         <td className="py-3 px-4">
           <label className="select-none checkbox block relative cursor-pointer text-xl h-4 w-4">
-            <input className="absolute opacity-0 left-0 top-0 cursor-pointer" type="checkbox" onClick={selectRow} />
+            <input className="absolute opacity-0 left-0 top-0 cursor-pointer" type="checkbox" checked={isSelected} onChange={selectRow} />
             <span className="h-4 w-4 checkmark absolute top-0 left-0 bg-gray-400"></span>
           </label>
         </td>
@@ -85,7 +85,7 @@ export default function Row({ data, message, isSelected }: Props) {
 
   return (
     <tr>
-      <td className="py-3 px-4" colSpan="5">{message}</td>
+      <td className="py-3 px-4" colSpan={5}>{message}</td>
     </tr>
   )
 }

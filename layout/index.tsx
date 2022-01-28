@@ -1,6 +1,9 @@
 import React, { ReactNode, useContext } from 'react'
+import { useQuery, useQueries, useQueryClient } from 'react-query'
 import Link from 'next/link'
 import UserContext from '../components/users/context'
+import Swal from 'sweetalert2'
+import { deleteData, Toast } from '../components/helpers'
 
 type Props = {
   children?: ReactNode
@@ -13,6 +16,8 @@ export default function Layout({ children }: Props) {
     select
   } = useContext(UserContext);
 
+  const queryClient = useQueryClient();
+
   const searchFilter = function(event: any) {
     filter.updateSearch(event.target.value);
   }
@@ -22,7 +27,47 @@ export default function Layout({ children }: Props) {
   }
 
   const bulkDelete = function() {
+    Swal.fire({
+        html: 'Are you sure you want to Delete <b>Selected</b> Users?',
+        icon: 'warning',
+        confirmButtonText: 'Delete',
+        cancelButtonText: 'Cancel',
+        showCancelButton: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // note: map userIDs to generate each query for useQueries
+          // source: https://blog.johnnyreilly.com/2021/01/03/strongly-typing-react-query-s-usequeries/
+          // let userIDs = select.get();
+          // const deleteUsers = useQueries(
+          //   userIDs.map((userID: number) => {
+          //     return {
+          //       queryKey: ['deleteUser', userID],
+          //       queryFn: () => fetch('users/' + userID, { method: 'DELETE' })
+          //     }
+          //   })
+          // );
 
+          let userIDs = select.get(), lastIndex = userIDs.length - 1;
+          userIDs.map((userID: number, index: number) => {
+            deleteData('users/' + userID).then(result => {
+              if(!result.ok) {
+                console.log('something happened');
+              }
+
+              // assume everything gets deleted
+              if(index == lastIndex) {
+                queryClient.invalidateQueries('Users');
+
+                select.clear();
+
+                Toast.fire({
+                  title: 'Selected users deleted successfully.'
+                });
+              }
+            });
+          });
+        }
+      });
   }
 
   return (

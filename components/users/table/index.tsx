@@ -10,6 +10,9 @@ type Props = {
 }
 
 export default function Table({ filter, selected }: Props) {
+  const {
+    select
+  } = useContext(UserContext);
 
   const { isLoading, error, data } = useQuery(['Users', filter], () => {
     let request = 'users';
@@ -25,6 +28,8 @@ export default function Table({ filter, selected }: Props) {
     return getData(request);
   });
 
+  // note: currently hidden
+  // TODO: add select all row functionality
   const selectAll = function(event: any) {
     if(event.target.checked) {
 
@@ -36,7 +41,7 @@ export default function Table({ filter, selected }: Props) {
       <thead className="bg-gray-800 text-white">
         <tr className="uppercase font-semibold text-lg">
           <th className="p-4 w-1">
-            <label className="select-none checkbox block relative cursor-pointer text-xl h-4 w-4">
+            <label className="select-none checkbox block relative cursor-pointer text-xl h-4 w-4 hidden">
               <input className="absolute opacity-0 left-0 top-0 cursor-pointer" type="checkbox" onClick={selectAll} />
               <span className="h-4 w-4 checkmark absolute top-0 left-0 bg-gray-400"></span>
             </label>
