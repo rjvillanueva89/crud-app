@@ -69,7 +69,7 @@ export default function Row({ data, message, isSelected }: Props) {
         </td>
         <td className="py-3 px-4">{data.name}</td>
         <td className="py-3 px-4">{data.category}</td>
-        <td className="py-3 px-4">{data.active ? 'active' : 'inactive'}</td>
+        <td className="py-3 px-4"><span className={`text-sm font-medium py-1 px-2 align-middle ${data.active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>{data.active ? 'active' : 'inactive'}</span></td>
         <td className="py-3 px-4 flex">
           <button className="h-full px-4 py-2 text-emerald-600" type="button" onClick={editRow}>
             <i className="fas fa-edit"></i>
